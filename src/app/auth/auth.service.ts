@@ -57,7 +57,7 @@ export class AuthService {
           this.userId = res.userId;
           const expirationDate = new Date(Date.now() + res.expiresIn * 1000);
           this.saveAuthData(this.token, expirationDate, this.userId);
-          this.router.navigate(['/']);
+          this.router.navigate(['/post-list']);
         }
       },
       err => {

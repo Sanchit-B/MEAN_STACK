@@ -9,8 +9,8 @@ const userRoutes = require("./routes/user");
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 app.use('/images', express.static(path.join('backend/images')));
 
 mongoose.connect("mongodb+srv://sanchit_bansal_007:SanchitB007@nodeapi-khp6t.mongodb.net/node-angular?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
