@@ -75,7 +75,7 @@ export class PostsService {
         postData
       )
       .subscribe((responseData) => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/post-list']);
       });
   }
 
@@ -99,7 +99,7 @@ export class PostsService {
 
     this.http.put('http://localhost:3000/api/posts/' + id, postData)
       .subscribe(res => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/post-list']);
       });
   }
 

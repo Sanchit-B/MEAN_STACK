@@ -1,6 +1,5 @@
-const path = require('path');
 const express = require('express');
-const bodyParser = require('body-parser');
+const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
@@ -9,9 +8,9 @@ const userRoutes = require("./routes/user");
 
 const app = express();
 
-app.use(express.json());
 app.use(express.urlencoded({extended: false}));
-app.use('/images', express.static(path.join('backend/images')));
+app.use(express.json());
+app.use('/images', express.static('backend/images'));
 
 mongoose.connect("mongodb+srv://sanchit_bansal_007:SanchitB007@nodeapi-khp6t.mongodb.net/node-angular?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
 .then(()=> {
@@ -21,6 +20,9 @@ mongoose.connect("mongodb+srv://sanchit_bansal_007:SanchitB007@nodeapi-khp6t.mon
   console.log('Connection failed.');
   console.log(error);
 });
+
+app.use(morgan('dev'));
+
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*") // for all the domains e.g localHost:3000, localHost:4000, etc...
   res.setHeader(
@@ -36,6 +38,24 @@ app.use((req, res, next) => {
 
 app.use("/api/posts", postsRoutes);
 app.use("/api/user", userRoutes);
+
+/**
+ *  Error Handling if none of the above routes satisfies the incoming request
+ */
+app.use((req, res, next) => {
+  const error = new Error("Not Found");
+  error.status = 404;
+  next(error);
+});
+
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message
+    }
+  });
+});
 
 
 module.exports = app;

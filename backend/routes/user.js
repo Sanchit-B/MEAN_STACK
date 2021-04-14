@@ -68,4 +68,39 @@ router.post('/login', (req, res, next) => {
     })
 })
 
+router.get('/refreshToken', (req, res, next) => {
+  User
+  .findOne({ email: req.query.email })
+  .then(user => {
+    if (user) {
+      console.log("============== req.query =========== ");
+      console.log(req.query)
+      console.log("============== user =========== ");
+      console.log(user)
+      const token = jwt.sign(
+        {email: user.email, userId: user._id},
+        'this_secret_key_should_be_a_longer_string_text_as_it_is_stored_on_server_for_authentication_purpose',
+        {expiresIn: '1h'}
+      )
+      res.status(200).json({
+        token: token,
+        expiresIn: 3600,
+        userId: user._id
+      })
+    } else {
+      console.log("============== no user =========== ");
+      console.log(user)
+      return res.status(401).json({
+        message: 'Auth Failed'
+      })
+    }
+  }).catch(err => {
+    console.log("============================");
+    console.log({ email: req.params.email });
+    return res.status(401).json({
+      message: 'Invalid Authentication Credentials!'
+    })
+  })
+})
+
 module.exports = router;

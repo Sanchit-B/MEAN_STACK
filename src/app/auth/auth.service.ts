@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AuthData } from './auth.model';
+import * as jwt_decode from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class AuthService {
 
   tokenTimer: any;
   isAuthenticated = false;
-  authStatusListner = new Subject<boolean>();
+  authStatusListner = new BehaviorSubject<boolean>(false);
 
   constructor(
     private http: HttpClient,
@@ -38,11 +39,37 @@ export class AuthService {
     this.http.post('http://localhost:3000/api/user/signup', authData)
     .subscribe(
       res => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/login']);
       },
       err => {
         this.authStatusListner.next(false);
       });
+  }
+
+  refreshJWTToken() {
+    const email = jwt_decode(localStorage.getItem('token'))['email'];
+    console.log('refreshing token for...');
+    console.log(email);
+
+    this.http.get<{ token: string, expiresIn: number, userId: string }>('http://localhost:3000/api/user/refreshToken', {
+      params: new HttpParams().set(
+        'email', email
+      )
+    }).subscribe(res => {
+      this.token = res.token;
+      if (this.token) {
+        this.setAuthTimer(res.expiresIn);
+        this.isAuthenticated = true;
+        this.authStatusListner.next(true);
+        this.userId = res.userId;
+        const expirationDate = new Date(Date.now() + res.expiresIn * 1000);
+        this.saveAuthData(this.token, expirationDate, this.userId);
+        this.router.navigate(['/post-list']);
+      }
+    },
+    err => {
+      this.authStatusListner.next(false);
+    })
   }
 
   login(email: string, password: string) {
@@ -89,12 +116,12 @@ export class AuthService {
     this.userId = null;
     clearTimeout(this.tokenTimer);
     this.clearAuthData();
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   private setAuthTimer(duration: number) {
     this.tokenTimer = setTimeout(() => {
-      this.logout();
+      this.refreshJWTToken();
     }, duration * 1000);
   }
 
