@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const postsRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
+require('dotenv').config();
 
 const app = express();
 

@@ -51,7 +51,7 @@ router.post('/login', (req, res, next) => {
 
       const token = jwt.sign(
         { email: fetchedUser.email, userId: fetchedUser._id },
-        'this_secret_key_should_be_a_longer_string_text_as_it_is_stored_on_server_for_authentication_purpose',
+        process.env.SECRET_TOKEN_KEY,
         { expiresIn: '1h'}
       );
 
@@ -79,7 +79,7 @@ router.get('/refreshToken', (req, res, next) => {
       console.log(user)
       const token = jwt.sign(
         {email: user.email, userId: user._id},
-        'this_secret_key_should_be_a_longer_string_text_as_it_is_stored_on_server_for_authentication_purpose',
+        process.env.SECRET_TOKEN_KEY,
         {expiresIn: '1h'}
       )
       res.status(200).json({

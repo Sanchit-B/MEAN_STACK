@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     const decodedToken =
     jwt.verify(
       token,
-      'this_secret_key_should_be_a_longer_string_text_as_it_is_stored_on_server_for_authentication_purpose'
+      process.env.SECRET_TOKEN_KEY
     );
 
 
