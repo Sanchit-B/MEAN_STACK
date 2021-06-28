@@ -1,0 +1,22 @@
+<div class="input-group mb-3">
+  <input type="text" class="form-control" placeholder="search by name..." #searchbar>
+</div>
+
+<div>
+  <button class="btn btn-primary" (click)="updateName()">Change Name</button>
+</div>
+
+<div>
+  <button class="btn btn-primary" (click)="showHide()">Show hide</button>
+</div>
+
+<div *appShowHideDirective="isVisible">
+  this is some text
+</div>
+<div *ngFor="let employee of employees | filterEmployees:searchTerm">
+  <app-employee-snapshot
+    [employeeDetails]="employee"
+    class="pt-3"
+  >
+  </app-employee-snapshot>
+</div>

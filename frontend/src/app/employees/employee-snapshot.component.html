@@ -1,0 +1,33 @@
+<div class="card">
+  <div class="card-header" appHighlightTextDirective>
+    {{(employeeDetails.firstName + " "+ employeeDetails.lastName) | uppercase}}
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-3">
+        <img [src]="employeeDetails.imageUrl" class="w-100">
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-9">
+        <div>
+          Company: {{employeeDetails.company | uppercase}}
+        </div>
+        <div>
+          PhoneNumber: {{employeeDetails.phoneNumber}}
+        </div>
+        <div>
+          DOB: {{employeeDetails.dob | date: "dd - MM - yy"}}
+        </div>
+        <div>
+          Monthly Salary: {{employeeDetails.monthlySalary | currency:"INR"}}
+        </div>
+        <div>
+          AnnualSalary: {{employeeDetails.annualSalary | currency:"INR"}}
+        </div>
+        <div>
+          EmailId: {{employeeDetails.emailId}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

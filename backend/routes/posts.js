@@ -170,4 +170,11 @@ router.delete(
       });
   })
 
+
+router.patch(
+  '/:id',
+  (req, res, next) => {
+    res.status(405).send();
+  }
+)
 module.exports = router;

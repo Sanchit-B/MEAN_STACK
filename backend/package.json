@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start_dev": "set NODE_ENV=dev&&nodemon --inspect server.js",
+    "start_prod": "set NODE_ENV=prod&&nodemon --inspect server.js"
+  },
+  "author": "sanchit",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.7",
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^9.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.2"
+  }
+}

@@ -1,0 +1,81 @@
+<div class="d-flex flex-row justify-content-center">
+  <form [formGroup]="task" (ngSubmit)="createTask()">
+    <mat-form-field appearance="outline">
+      <input
+        matInput
+        type="text"
+        formControlName="title"
+        placeholder="title..."
+      >
+    </mat-form-field>
+
+    <button type="submit" class="btn btn-primary">Create Task</button>
+  </form>
+</div>
+
+<div class="row" style="background-color: lightblue;">
+
+  <div class="col-12 col-md-3 border border-dark" *ngFor="let col of columns">
+    <h5 class="text-center">
+      {{ col.title }}
+    </h5>
+
+    <ul class="list-group">
+      <ng-container
+        *ngFor="let task of taskList; let i = index;"
+      >
+
+        <li
+          class="list-group-item"
+          *ngIf="col.stage === task.stage"
+        >
+          <b>task- {{task._id}} </b>
+
+          <span class="float-right" style="cursor: pointer;">
+            <span
+              class="material-icons"
+              (click)="moveBackward(task)"
+              *ngIf="col.stage !== 0 && col.stage !== 3"
+            >
+              arrow_left
+            </span>
+
+            <span
+              class="material-icons"
+              (click)="moveForward(task)"
+              *ngIf="col.stage !== 3"
+            >
+              arrow_right
+            </span>
+
+            <span
+              class="material-icons"
+              (click)="delete(i)"
+              *ngIf="col.stage !== 3"
+            >
+              delete
+            </span>
+          </span>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+
+  <!-- <div class="col-12 col-md-3 border border-dark">
+    <b>
+      Open
+    </b>
+  </div>
+
+  <div class="col-12 col-md-3 border border-dark">
+    <b>
+      Todo
+    </b>
+  </div>
+
+  <div class="col-12 col-md-3 border border-dark">
+    <b>
+      Done
+    </b>
+  </div> -->
+</div>

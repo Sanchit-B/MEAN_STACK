@@ -1,44 +1,56 @@
 const express = require('express');
-const morgan = require('morgan');
 const mongoose = require('mongoose');
-const cors = require('cors');
+const path = require('path');
+require('dotenv').config();
+
+/**
+ * Extra packages
+ */
+// const morgan = require('morgan');
 
 const postsRoutes = require("./routes/posts");
 const userRoutes = require("./routes/user");
-require('dotenv').config();
+const taskRoutes = require("./routes/tasks");
 
 const app = express();
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-app.use('/images', express.static('backend/images'));
+app.use('/images', express.static(path.join(__dirname + '/images')));
 
-mongoose.connect("mongodb+srv://sanchit_bansal_007:SanchitB007@nodeapi-khp6t.mongodb.net/node-angular?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
-.then(()=> {
-  console.log('Database connected.');
-})
-.catch((error)=> {
-  console.log('Connection failed.');
-  console.log(error);
+mongoose.connect(
+  process.env.DB_URL,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+).then(resp => {
+  console.log("DB connected!!");
+}).catch(err => {
+  console.log("Failed to connect to DB");
 });
 
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*") // for all the domains e.g localHost:3000, localHost:4000, etc...
-  res.setHeader(
-    "Access-control-Allow-Headers",
-    "Origin, X-Requested-with, Content-Type, Accept, Authorization"
-    );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PATCH, PUT, DELETE, OPTIONS"
-    );
-  next();
-});
+if (process.env.NODE_ENV === 'dev') {
 
-app.use("/api/posts", postsRoutes);
-app.use("/api/user", userRoutes);
+  app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*") // for all the domains e.g localHost:3000, localHost:4000, etc...
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-with, Content-Type, Accept, Authorization"
+      );
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PATCH, PUT, DELETE, OPTIONS"
+      );
+    next();
+  });
+
+  app.use("/api/posts", postsRoutes);
+  app.use("/api/user", userRoutes);
+  app.use("/dev/api/tasks", taskRoutes);
+}
 
 /**
  *  Error Handling if none of the above routes satisfies the incoming request

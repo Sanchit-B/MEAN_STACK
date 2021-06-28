@@ -1,0 +1,29 @@
+
+<div class="layout-row align-items-center justify-content-center mt-50">
+
+  <section class="layout-column align-items-center justify-content-between">
+    <span class="input layout-row">
+        <input type="number" class="large"
+        [(ngModel)]="val1" (ngModelChange)="changed($event, 'v1')"
+        data-test-id="app-input1"/>
+        <label class="suffix" data-test-id="app-label1">{{lengthOptions[l1].unit}}</label>
+    </span>
+    <select [(ngModel)]="l1" (ngModelChange)="changedUnit($event, 'v1')" data-test-id="app-select1">
+      <option *ngFor="let opt of lengthOptions" [value]="opt.id" [selected]="opt.id">{{opt.label}}</option>
+    </select>
+  </section>
+
+  <label>⇋</label>
+
+  <section class="layout-column align-items-center justify-content-between">
+      <span class="input layout-row">
+          <input type="number" class="large"
+          [(ngModel)]="val2" (ngModelChange)="changed($event, 'v2')"
+          data-test-id="app-input2"/>
+          <label class="suffix" data-test-id="app-label2">{{lengthOptions[l2].unit}}</label>
+      </span>
+      <select [(ngModel)]="l2" (ngModelChange)="changedUnit($event, 'v2')" data-test-id="app-select2">
+        <option *ngFor="let opt of lengthOptions" [value]="opt.id" [selected]="opt.id">{{opt.label}}</option>
+      </select>
+    </section>
+</div>

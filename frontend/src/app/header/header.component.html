@@ -1,0 +1,37 @@
+<div class="pos-f-t text-white">
+  <nav class="navbar navbar-dark bg-dark">
+    <button *ngIf="userIsAuthenticated" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a mat-button *ngIf="!userIsAuthenticated" routerLink="/sign-up" routerLinkActive="mat-accent">Sign up</a>
+
+    <a mat-button *ngIf="!userIsAuthenticated" routerLink="/login" routerLinkActive="mat-accent">Login</a>
+  </nav>
+
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4">
+      <ul>
+        <li>
+          <a mat-button *ngIf="userIsAuthenticated" routerLink="/employees" routerLinkActive="mat-accent">Employees List</a>
+
+          <a mat-button *ngIf="userIsAuthenticated" routerLink="/post-list" routerLinkActive="mat-accent">MyMessages</a>
+
+          <a mat-button *ngIf="userIsAuthenticated" routerLink="/create" routerLinkActive="mat-accent">New post</a>
+
+          <a mat-button *ngIf="userIsAuthenticated" routerLink="/kanban" routerLinkActive="mat-accent">Kanban</a>
+
+          <a mat-button *ngIf="userIsAuthenticated" routerLink="/length-convertor" routerLinkActive="mat-accent">Length Convertor</a>
+
+          <a mat-button *ngIf="userIsAuthenticated" routerLink="/user-book-list" routerLinkActive="mat-accent">User Book Llist</a>
+
+          <a mat-button *ngIf="userIsAuthenticated" routerLink="/survey-list-start" routerLinkActive="mat-accent">Filter List</a>
+
+          <a mat-button *ngIf="userIsAuthenticated" routerLink="/weather-finder" routerLinkActive="mat-accent">Weather Finder</a>
+
+          <button mat-button *ngIf="userIsAuthenticated" (click)="onLogout()">Logout</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
